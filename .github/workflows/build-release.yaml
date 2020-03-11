@@ -33,7 +33,7 @@ jobs:
 
       - name: strip
         run: |
-          sudo strip target/x86_64-unknown-linux-musl/release/link-checker
+          sudo strip target/x86_64-unknown-linux-musl/release/link-checker-rs
 
       - name: Get version
         run: echo ::set-env name=version::$(date -u +"%Y%m%d%H%M%S")
@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/x86_64-unknown-linux-musl/release/link-checker
+          asset_path: target/x86_64-unknown-linux-musl/release/link-checker-rs
           asset_name: link-checker-x86_64-linux-static
           asset_content_type: application/x-elf
