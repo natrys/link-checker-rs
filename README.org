@@ -1,0 +1,24 @@
+I started with this:
+
+#+begin_src sh
+#!/bin/sh
+
+while read url; do
+  curl -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36" -sSfL >/dev/null 2>&1 $url || echo $url
+done
+#+end_src
+
+But suffice it to say, it wasn't finishing any time soon (my urls file is big). Instead of mucking with process pool in shell or something (or even use gnu parallel), took this chance to survey and learn about the Rust async I/O and http stack. I think it's not fully without its pain points yet.
+
+Anyway, this takes in a bulk of urls from stdin, and prints out only those that are faulty (e.g timeouts or don't give back 200 OK).
+
+#+begin_src sh
+cat urls | link-checker | tee faulty
+#+end_src
+
+Original order is preserved in output despite inherent asynchronicity, so to instead get back the links that are valid, one could use =comm= from coreutils, e.g.:
+
+#+begin_src sh
+cat urls | link-checker > faulty
+comm -23 --nocheck-order urls faulty > valid
+#+end_src
