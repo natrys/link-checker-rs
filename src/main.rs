@@ -2,11 +2,11 @@ use std::eprint;
 use std::io;
 use std::io::BufRead;
 use std::time::Duration;
-use std::vec::Vec;
 
 use std::cell::RefCell;
 
 use anyhow::Result;
+use futures::future;
 use futures::stream::StreamExt;
 use reqwest::header;
 
@@ -49,21 +49,19 @@ async fn main() {
         .collect::<Vec<String>>();
     let total = urls.len();
 
-    let statuses = futures::stream::iter(urls.iter().map(|url| async move {
+    futures::stream::iter(urls.iter().map(|url| async move {
         let status = check(url).await;
         print_progress(total);
-
         match status {
-            Ok(true) => true,
-            _ => false,
+            Ok(true) => (true, url),
+            _ => (false, url),
         }
     }))
     .buffered(50)
-    .collect::<Vec<bool>>()
+    .filter(|(status, _url)| future::ready(!status))
+    .for_each(|(_, url)| {
+        println!("{}", url);
+        future::ready(())
+    })
     .await;
-
-    urls.iter()
-        .zip(statuses.iter())
-        .filter(|(_url, &status)| !status)
-        .for_each(|(url, _)| println!("{}", url));
 }
