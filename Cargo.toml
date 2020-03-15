@@ -1,6 +1,6 @@
 [package]
 name = "link-checker-rs"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Imran Khan <imrankhan@teknik.io>"]
 edition = "2018"
 
@@ -9,3 +9,4 @@ reqwest = { version = "*", features = ["rustls-tls"] }
 tokio = { version = "*", features = ["full"] }
 anyhow = "*"
 futures = "*"
+clap = { git = "https://github.com/clap-rs/clap/" }
