@@ -17,7 +17,7 @@ struct Config {
     #[clap(
         short = "u",
         long = "user-agent",
-        default_value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+        default_value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
     )]
     user_agent: String,
     #[clap(
@@ -54,7 +54,7 @@ async fn main() {
     let urls = io::stdin()
         .lock()
         .lines()
-        .filter_map(std::result::Result::ok)
+        .flatten()
         .collect::<Vec<String>>();
     let total = urls.len();
 
