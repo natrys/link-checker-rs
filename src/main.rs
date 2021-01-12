@@ -15,13 +15,13 @@ use reqwest::{header, Client};
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Imran Khan")]
 struct Config {
     #[clap(
-        short = "u",
+        short = 'u',
         long = "user-agent",
-        default_value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"
+        default_value = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
     )]
     user_agent: String,
     #[clap(
-        short = "t",
+        short = 't',
         long = "timeout",
         default_value = "10",
         parse(try_from_str)
